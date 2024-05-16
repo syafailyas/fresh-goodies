@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { IoSearch } from "react-icons/io5";
 import { BsSortAlphaUpAlt, BsSortAlphaDownAlt } from "react-icons/bs";
-import { useProduct } from "@/hooks/useProduct";
+import useProduct from "@/hooks/useProduct";
 
 const Category: React.FC = () =>
 {

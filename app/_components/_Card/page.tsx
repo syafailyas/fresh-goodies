@@ -2,11 +2,15 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useProductContext } from "@/hooks/ProductContext";
 import { Product } from "@/types/product";
 
-const Card: React.FC = () =>
+interface CardProps
+{
+  selectedCategory: string | null;
+}
+
+const Card: React.FC<CardProps> = ( { selectedCategory } ) =>
 {
   const allProduct = useProductContext() as Product[];
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -46,6 +50,7 @@ const Card: React.FC = () =>
 
                   <div className = "flex justify-between bg-[#F9F8F6] rounded-2xl">
                     <p className = "py-2 px-3">{product?.weight / 1000} kg</p>
+
                     <button className = "py-2 px-3">+</button>
                   </div>
                 </div>

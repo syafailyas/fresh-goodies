@@ -1,13 +1,22 @@
 // useProduct.js
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { config } from "@/constants/url";
 import { Product } from "@/types/product";
 
-export const useProduct = () =>
+interface ProductGroup
+{
+  [key: string]: Product[];
+}
+
+const useProduct = () =>
 {
   const [allProduct, setAllProduct] = useState< Product[] >( [] );
+  const [products, setProducts] = useState< Product[] >( [] );
+  const [categories, setCategories] = useState< string[] >( [] );
+  const [productGroup, setProductGroup] = useState<ProductGroup>();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const getAPI = `${config.BASE_URL}${config.endpoints.products}`;
 
@@ -62,5 +71,34 @@ export const useProduct = () =>
     setAllProduct(sortedProducts);
   };
 
-  return { allProduct, sortProductsAscending, sortProductsDescending };
+  const filterProductsByCategory = useCallback(
+    () =>
+    {
+      if (selectedCategory && productGroup)
+      {
+        return productGroup[selectedCategory];
+      }
+
+      return products;
+    }, [selectedCategory, productGroup, products]
+  );
+
+  const selectCategory = (category: string | null) =>
+  {
+    setSelectedCategory(category);
+  };
+
+  return {
+    allProduct,
+    sortProductsAscending,
+    sortProductsDescending,
+    products,
+    productGroup,
+    categories,
+    selectedCategory,
+    selectCategory,
+    filteredProducts: filterProductsByCategory(),
+  };
 };
+
+export default useProduct;
